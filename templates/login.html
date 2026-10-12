@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="auth-card card shadow-sm mx-auto">
+  <div class="card-body p-4">
+    <h1 class="h4 fw-bold mb-1">Welcome back</h1>
+    <p class="text-body-secondary mb-4">Log in to see your to-do list.</p>
+
+    {% if errors.form %}
+      <div class="alert alert-danger py-2" role="alert">
+        <i class="bi bi-exclamation-circle"></i> {{ errors.form }}
+      </div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('login') }}" class="js-validate" novalidate>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" value="{{ email }}"
+               class="form-control {% if errors.email %}is-invalid{% endif %}"
+               data-required="Email is required" autocomplete="email">
+        <div class="invalid-feedback">{{ errors.email }}</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password"
+               class="form-control {% if errors.password %}is-invalid{% endif %}"
+               data-required="Password is required" autocomplete="current-password">
+        <div class="invalid-feedback">{{ errors.password }}</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Log in</button>
+    </form>
+
+    <p class="text-center mt-4 mb-0 small">
+      No account yet? <a href="{{ url_for('register') }}">Register</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

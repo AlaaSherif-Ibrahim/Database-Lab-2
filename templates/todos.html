@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}My list{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+  <div>
+    <h1 class="h3 fw-bold mb-0">My to-dos</h1>
+    <p class="text-body-secondary mb-0 small">
+      {% if total == 0 %}Nothing yet
+      {% else %}{{ open_count }} open · {{ total - open_count }} done{% endif %}
+    </p>
+  </div>
+  <!-- Bonus: filters -->
+  <div class="btn-group btn-group-sm" role="group" aria-label="Filter">
+    {% for f in ['all', 'open', 'done'] %}
+      <a href="{{ url_for('todos', filter=f) }}"
+         class="btn {% if current_filter == f %}btn-primary{% else %}btn-outline-primary{% endif %}">
+        {{ f|capitalize }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Add a to-do (R4) -->
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <form method="post" action="{{ url_for('add') }}" class="js-validate" novalidate>
+      <div class="input-group has-validation">
+        <input type="text" name="title" value="{{ add_value }}"
+               class="form-control {% if add_error %}is-invalid{% endif %}"
+               placeholder="What needs to be done?" aria-label="New to-do title"
+               data-required="Title is required"
+               data-maxlength="200" data-maxlength-msg="Title is too long (200 characters at most)">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add</button>
+        <div class="invalid-feedback">{{ add_error or '' }}</div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- The list (R3, R5, R6, R7) -->
+{% if todos %}
+  <ul class="list-group shadow-sm">
+    {% for t in todos %}
+      {% set err = edit_error if edit_error and edit_error.id == t.todo_id else None %}
+      <li class="list-group-item todo-item {% if t.is_done %}is-done{% endif %}">
+        <div class="d-flex align-items-start gap-2">
+
+          <!-- Mark done / not done (R6) -->
+          <form method="post" action="{{ url_for('toggle', todo_id=t.todo_id, filter=current_filter) }}">
+            <button type="submit" name="is_done" value="{{ 0 if t.is_done else 1 }}"
+                    class="btn btn-link p-0 toggle-btn"
+                    title="{{ 'Mark as not done' if t.is_done else 'Mark as done' }}"
+                    aria-label="{{ 'Mark as not done' if t.is_done else 'Mark as done' }}">
+              <i class="bi {{ 'bi-check-circle-fill text-success' if t.is_done else 'bi-circle' }}"></i>
+            </button>
+          </form>
+
+          <!-- Edit title (R5) -->
+          <form method="post" action="{{ url_for('edit', todo_id=t.todo_id) }}"
+                class="flex-grow-1 js-validate" novalidate>
+            <div class="d-flex gap-2 flex-wrap flex-sm-nowrap">
+              <div class="flex-grow-1">
+                <input type="text" name="title" value="{{ t.title }}"
+                       class="form-control form-control-sm todo-title {% if err %}is-invalid{% endif %}"
+                       aria-label="To-do title"
+                       data-required="Title is required"
+                       data-maxlength="200" data-maxlength-msg="Title is too long (200 characters at most)">
+                <div class="invalid-feedback">{{ err.message if err else '' }}</div>
+                <div class="small text-body-secondary mt-1">
+                  <i class="bi bi-clock"></i> {{ t.created_at.strftime('%d %b %Y, %H:%M') }}
+                </div>
+              </div>
+              <div class="d-flex gap-2 align-items-start">
+                <button type="submit" class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-floppy"></i> Save
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Delete (R7): asks first -->
+          <form method="post" action="{{ url_for('delete', todo_id=t.todo_id, filter=current_filter) }}"
+                onsubmit="return confirm('Are you sure you want to delete this to-do?');">
+            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete" aria-label="Delete">
+              <i class="bi bi-trash"></i><span class="d-none d-md-inline"> Delete</span>
+            </button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <!-- Friendly empty state -->
+  <div class="empty-state card shadow-sm text-center">
+    <div class="card-body py-5">
+      <i class="bi bi-clipboard-check display-4 text-primary"></i>
+      {% if total == 0 %}
+        <h2 class="h5 mt-3">Your list is empty</h2>
+        <p class="text-body-secondary mb-0">Add your first to-do above and get things done.</p>
+      {% else %}
+        <h2 class="h5 mt-3">Nothing here</h2>
+        <p class="text-body-secondary mb-0">No {{ current_filter }} to-dos. <a href="{{ url_for('todos') }}">Show all</a></p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

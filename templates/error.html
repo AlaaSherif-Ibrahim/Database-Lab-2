@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }}{% endblock %}
+{% block content %}
+<div class="auth-card card shadow-sm mx-auto text-center">
+  <div class="card-body p-5">
+    <div class="display-5 fw-bold text-primary mb-2">{{ code }}</div>
+    <p class="mb-4">{{ message }}</p>
+    <a href="{{ url_for('todos') }}" class="btn btn-primary">Back to my list</a>
+  </div>
+</div>
+{% endblock %}
