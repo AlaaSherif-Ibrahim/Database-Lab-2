@@ -1,6 +1,5 @@
 # Lab 2: Login & To-Do Application
 
-Introduction to Database Systems, Fall 2026, Alexandria National University
 
 A small web app where a user can sign up, log in, and manage a private to-do list.
 Every value goes to MySQL as a parameter, passwords are stored as bcrypt hashes,
@@ -11,6 +10,7 @@ and every form is checked both in the browser and on the server.
 | Name | ID | Work |
 |---|---|---|
 | A'laa Sherif Ibrahim | 2304249 | Everything: database schema, Flask server, templates, validation, UI, README |
+| Mariem Mohamed | 2304251 | Everything: database schema, Flask server, templates, validation, UI, README |
 
 ## 2. Technology
 
