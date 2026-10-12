@@ -30,7 +30,7 @@ CREATE TABLE todos (
     todo_id    INT          NOT NULL AUTO_INCREMENT,
     user_id    INT          NOT NULL,
     title      VARCHAR(200) NOT NULL,
-    is_done    TINYINT(1)   NOT NULL DEFAULT 0,
+    is_done    TINYINT      NOT NULL DEFAULT 0,
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (todo_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
