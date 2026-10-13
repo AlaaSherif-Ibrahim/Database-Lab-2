@@ -12,6 +12,8 @@ and every form is checked both in the browser and on the server.
 | A'laa Sherif Ibrahim | 2304249 | Everything: database schema, Flask server, templates, validation, UI, README |
 | Mariem Mohamed | 2304251 | Everything: database schema, Flask server, templates, validation, UI, README |
 
+**Who did what:** We worked together on every part of the project, and neither of us worked alone on anything. We built the database schema, the Flask server, the templates, the validation (browser and server), the user interface, and this README together, and we tested everything together. We took turns writing the code while the other reviewed it, and both of us have commits in this repository.
+
 ## 2. Technology
 
 | Part | Used |
